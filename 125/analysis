@@ -1,0 +1,66 @@
+
+def longest_consecutive(nums):
+This defines a function named longest_consecutive that takes an input list nums.
+
+num_set = set(nums)
+Convert the list into a set, which allows O(1) average time for checking if a number exists.
+
+Removes duplicates automatically.
+
+Example:
+Input: [100, 4, 200, 1, 3, 2] →
+num_set = {1, 2, 3, 100, 4, 200}
+
+longest = 0
+This keeps track of the maximum sequence length we’ve found so far.
+
+for num in num_set:
+Loop through each number in the set (not the original list) to ensure no duplicates and fast lookup.
+
+Each number will be considered at most once.
+
+if num - 1 not in num_set:
+This checks whether the current number is the start of a sequence.
+
+If num - 1 is in the set, that means this number is not the beginning (e.g., for 2, we skip if 1 exists).
+
+This ensures we only build a sequence once per starting point, reducing redundant work.
+
+current = num
+Store the current number from which we’ll build a sequence.
+
+streak = 1
+Initialize the streak count to 1 (the current number itself counts as 1).
+
+while current + 1 in num_set:
+Continue extending the sequence as long as the next consecutive number exists.
+
+This ensures we move from, say, 1 → 2 → 3 → 4, etc.
+
+current += 1
+Move to the next number in the sequence.
+
+streak += 1
+Count how many numbers are in this sequence.
+
+longest = max(longest, streak)
+Update longest if the current streak is longer than the previous best.
+
+return longest
+Return the final longest consecutive sequence length.
+
+🔁 Example Walkthrough:
+Input: [100, 4, 200, 1, 3, 2]
+Set: {1, 2, 3, 100, 4, 200}
+
+Processing:
+
+1 → start of a sequence → finds 2, 3, 4 → streak = 4
+
+2, 3, 4 → skipped because they are not starts
+
+100 → start of a sequence, but only one element → streak = 1
+
+200 → same → streak = 1
+
+So the longest streak is 4.
