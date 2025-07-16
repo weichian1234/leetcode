@@ -1,0 +1,94 @@
+Given a string s, return the longest palindromic substring in s.
+
+ 
+
+Example 1:
+
+Input: s = "babad"
+Output: "bab"
+Explanation: "aba" is also a valid answer.
+Example 2:
+
+Input: s = "cbbd"
+Output: "bb"
+ 
+
+Constraints:
+
+1 <= s.length <= 1000
+s consist of only digits and English letters.
+
+===========================================================
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        if len(s) < 2:
+            return s
+
+        start, max_len = 0, 1
+
+        def expand(left, right):
+            # Expand while the letters match and remain in bounds
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            # Return length of palindrome found
+            return right - left - 1
+
+        for i in range(len(s)):
+            len1 = expand(i, i)       # Odd-length center
+            len2 = expand(i, i + 1)   # Even-length center
+            curr_len = max(len1, len2)
+
+            if curr_len > max_len:
+                max_len = curr_len
+                start = i - (curr_len - 1) // 2
+
+        return s[start:start + max_len]
+
+===========================================================================
+if len(s) < 2: Handles base cases (empty or single-character strings).
+
+start, max_len = 0, 1: Tracks the start index and length of the current longest palindrome.
+
+expand(left, right):
+
+Expands outward while characters match.
+
+Loop stops when mismatch or boundary is reached.
+
+Returns palindrome length: right - left - 1.
+
+In the main loop:
+
+len1 = expand(i, i) finds odd-length palindromes.
+
+len2 = expand(i, i+1) handles even-length cases.
+
+curr_len = max(len1, len2): picks the longer one.
+
+If curr_len is a new maximum, update max_len and recalculate start.
+
+🔍 Example: "babad"
+i = 0 (“b”):
+
+expand(0,0) → "b" (length 1)
+
+expand(0,1) → "" (no match)
+
+i = 1 (“a”):
+
+expand(1,1) → "bab" (length 3)
+
+expand(1,2) → "" or shorter
+
+Updates max_len = 3, start = 0
+
+Final result: "bab" (or "aba" if center chosen at index 2)
+
+⚙️ Complexity
+Time: O(n²) – for each of the n positions, expansion may take O(n).
+
+Space: O(1) – only a few variables and no extra data structures besides input.
+
+
+        
